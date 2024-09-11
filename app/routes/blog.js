@@ -1,6 +1,17 @@
 const route = require('express').Router();
 const controller = require('../controllers/blog');
 
+
+
+/**
+ * Create a new blog in the database.
+ *
+ * @param {Blog} newBlog - The new Blog object to be created.
+ * @returns {Promise} Promise resolved when the new blog is created
+ */
+route.post('/', controller.createBlog);
+
+
 /**
  * Get all blogs from the database.
  *
@@ -8,13 +19,6 @@ const controller = require('../controllers/blog');
  */
 route.get('/', controller.getAllBlogs);
 
-/**
- * Get a single blog by its id from the database.
- *
- * @param {string} id - The unique identifier of the blog.
- * @returns {Promise<Blog | null>} A single Blog object or null if not found.
- */
-route.get('/:id', controller.getBlogById);
 
 /**
  * Update a blog by its id in the database.
@@ -84,4 +88,11 @@ route.get('/popularity', controller.getBlogsByPopularity);
  */
 route.put('/:id/views', controller.incrementBlogViews);
 
+/**
+ * Get a single blog by its id from the database.
+ *
+ * @param {string} id - The unique identifier of the blog.
+ * @returns {Promise<Blog | null>} A single Blog object or null if not found.
+ */
+route.get('/:id', controller.getBlogById);
 module.exports = route;

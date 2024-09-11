@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-
 const Blog = mongoose.model('Blog');
 
-// create a new blog post
+// Create a new blog post
 exports.createBlog = async (req, res) => {
     const blog = new Blog(req.body);
 
@@ -14,75 +13,114 @@ exports.createBlog = async (req, res) => {
     }
 };
 
-// get all blog posts
-// paginate all blog posts
+// Get all blog posts with pagination
 exports.getAllBlogs = async (req, res) => {
-    const { page = 1, limit = 10 } = req.query;
+    let { page = 1, limit = 10 } = req.query;
+    page = parseInt(page, 10);
+    limit = parseInt(limit, 10);
+
+    if (isNaN(page) || page <= 0 || isNaN(limit) || limit <= 0) {
+        return res.status(400).json({ error: 'Invalid pagination parameters' });
+    }
+
     const startIndex = (page - 1) * limit;
-    const total = await Blog.countDocuments();
 
     try {
+        const total = await Blog.countDocuments();
+        if (startIndex >= total) {
+            return res.status(404).json({ message: 'No blog posts found' });
+        }
         const blogs = await Blog.find()
-           .sort({ createdAt: -1 })
-           .limit(limit)
-           .skip(startIndex);
+            .sort({ createdAt: -1 }) // Sort by newest first
+            .skip(startIndex)
+            .limit(limit);
 
         res.json({
             currentPage: page,
             totalPages: Math.ceil(total / limit),
+            totalItems: total,
             blogs,
         });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
-// get a single blog post by id
+
+// Get a single blog post by id
 exports.getBlogById = async (req, res) => {
     try {
         const blog = await Blog.findById(req.params.id);
-        if (!blog) return res.status(404).json({ message: 'Blog not found' });
+        if (!blog) {
+            return res.status(404).json({ message: 'Blog not found' });
+        }
         res.json(blog);
     } catch (error) {
+
+        if (error instanceof mongoose.CastError) {
+            return res.status(400).json({ message: 'Invalid blog ID' });
+        }
         res.status(500).json({ error: error.message });
     }
 };
 
-// update a blog post by id
+// Update a blog post by id
 exports.updateBlog = async (req, res) => {
     try {
         const blog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!blog) return res.status(404).json({ message: 'Blog not found' });
+        if (!blog) {
+            return res.status(404).json({ message: 'Blog not found' });
+        }
         res.json(blog);
     } catch (error) {
+        if (error instanceof mongoose.CastError) {
+            return res.status(400).json({ message: 'Invalid blog ID' });
+        }
         res.status(400).json({ error: error.message });
     }
 };
 
-// delete a blog post by id
+// Delete a blog post by id
 exports.deleteBlog = async (req, res) => {
     try {
         const blog = await Blog.findByIdAndDelete(req.params.id);
-        if (!blog) return res.status(404).json({ message: 'Blog not found' });
+        if (!blog) {
+            return res.status(404).json({ message: 'Blog not found' });
+        }
         res.json({ message: 'Blog deleted successfully' });
     } catch (error) {
+
+        if (error instanceof mongoose.CastError) {
+            return res.status(400).json({ message: 'Invalid blog ID' });
+        }
         res.status(500).json({ error: error.message });
     }
 };
 
-// search blog posts by title or content
+// Search blog posts by title or content
 exports.searchBlogs = async (req, res) => {
     const query = req.query.q;
+
+    if (!query || query.trim() === '') {
+        return res.status(400).json({ message: 'Query parameter is required' });
+    }
+
     try {
-        const blogs = await Blog.find({ $or: [{ title: new RegExp(query, 'i') }, { content: new RegExp(query, 'i') }] });
+        const blogs = await Blog.find({
+            $or: [
+                { title: new RegExp(query, 'i') },
+                { content: new RegExp(query, 'i') }
+            ]
+        });
         res.json(blogs);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// filter blog posts by category
+// Filter blog posts by category
 exports.filterBlogsByCategory = async (req, res) => {
     const category = req.params.category;
+
     try {
         const blogs = await Blog.find({ category });
         res.json(blogs);
@@ -91,9 +129,10 @@ exports.filterBlogsByCategory = async (req, res) => {
     }
 };
 
-// get blog posts by tag
+// Get blog posts by tag
 exports.getBlogsByTag = async (req, res) => {
     const tag = req.params.tag;
+
     try {
         const blogs = await Blog.find({ tags: tag });
         res.json(blogs);
@@ -102,19 +141,25 @@ exports.getBlogsByTag = async (req, res) => {
     }
 };
 
-// get blog posts by date range
+// Get blog posts by date range
 exports.getBlogsByDateRange = async (req, res) => {
-    const startDate = req.query.start_date;
-    const endDate = req.query.end_date;
+    const { start_date, end_date } = req.query;
+
+    if (!start_date || !end_date) {
+        return res.status(400).json({ message: 'Start date and end date are required' });
+    }
+
     try {
-        const blogs = await Blog.find({ createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) } });
+        const blogs = await Blog.find({
+            createdAt: { $gte: new Date(start_date), $lte: new Date(end_date) }
+        });
         res.json(blogs);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// get blog posts by popularity
+// Get blog posts by popularity
 exports.getBlogsByPopularity = async (req, res) => {
     try {
         const blogs = await Blog.find().sort({ views: -1 });
@@ -124,14 +169,21 @@ exports.getBlogsByPopularity = async (req, res) => {
     }
 };
 
-// increment views count for a blog post by id
+// Increment views count for a blog post by id
 exports.incrementBlogViews = async (req, res) => {
     const id = req.params.id;
+
     try {
         const blog = await Blog.findByIdAndUpdate(id, { $inc: { views: 1 } }, { new: true });
-        if (!blog) return res.status(404).json({ message: 'Blog not found' });
+        if (!blog) {
+            return res.status(404).json({ message: 'Blog not found' });
+        }
         res.json(blog);
     } catch (error) {
+
+        if (error instanceof mongoose.CastError) {
+            return res.status(400).json({ message: 'Invalid blog ID' });
+        }
         res.status(500).json({ error: error.message });
     }
 };

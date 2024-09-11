@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "0fcea8e1-7d99-4b31-b23c-dc008acc607e",
+		"name": "Blog API",
+		"description": "A collection of API requests for the Blog API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29766081"
+	},
+	"item": [
+		{
+			"name": "Get all blogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog?limit=2&page=1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "2"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Get all blogs from the database."
+			},
+			"response": []
+		},
+		{
+			"name": "Get a single blog by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Get a single blog by its id from the database."
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new blog",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Unlocking Creativity: The Power of Daily Routines\",\n  \"content\": \"In the fast-paced world of today, finding time for creativity can seem challenging. Yet, integrating creativity into your daily routine can be a game-changer. The key is to build habits that nurture and unlock your creative potential. Here’s how establishing a daily routine can elevate your creativity:\",\n  \"category\": \"Personal Development\",\n  \"tags\": [\"Creativity\", \"Inspiration\", \"Productivity\"]\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/api/blog",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog"
+					]
+				},
+				"description": "Create a new blog post in the database."
+			},
+			"response": []
+		},
+		{
+			"name": "Update a blog by id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"_id\": \"66e1cd057b7f0f05947ee5df\",\n    \"title\": \"The Benefits of Embracing Minimalism in Daily Life\",\n    \"content\": \"In a world overflowing with consumer goods, digital distractions, and endless to-do lists, the concept of minimalism has gained significant traction. Minimalism, at its core, is about simplifying and decluttering life to focus on what truly matters. But how does embracing minimalism translate into tangible benefits in daily life?\",\n    \"category\": \"Lifestyle\",\n    \"tags\": [\n        \"Minimalism\",\n        \"Decluttering\",\n        \"Productivity\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/blog/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "66e1cd057b7f0f05947ee5df"
+						}
+					]
+				},
+				"description": "Update a blog by its id in the database."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a blog by id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": ""
+						}
+					]
+				},
+				"description": "Delete a blog by its id from the database."
+			},
+			"response": []
+		},
+		{
+			"name": "Search for blogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/search?q=",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": ""
+						}
+					]
+				},
+				"description": "Search for blogs based on a query."
+			},
+			"response": []
+		},
+		{
+			"name": "Filter blogs by category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/category/:category",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						"category",
+						":category"
+					],
+					"variable": [
+						{
+							"key": "category",
+							"value": ""
+						}
+					]
+				},
+				"description": "Filter blogs by category."
+			},
+			"response": []
+		},
+		{
+			"name": "Get blogs by tag",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/tag/:tag",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						"tag",
+						":tag"
+					],
+					"variable": [
+						{
+							"key": "tag"
+						}
+					]
+				},
+				"description": "Get blogs by tag."
+			},
+			"response": []
+		},
+		{
+			"name": "Get blogs by date range",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/date-range?start_date&end_date",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						"date-range"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": null
+						},
+						{
+							"key": "end_date",
+							"value": null
+						}
+					]
+				},
+				"description": "Get blogs by date range."
+			},
+			"response": []
+		},
+		{
+			"name": "Get blogs by popularity",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/popularity",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						"popularity"
+					]
+				},
+				"description": "Get blogs by popularity."
+			},
+			"response": []
+		},
+		{
+			"name": "Increment views count for a blog post by id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/blog/:id/views",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"blog",
+						":id",
+						"views"
+					],
+					"variable": [
+						{
+							"key": "id"
+						}
+					]
+				},
+				"description": "Increment views count for a blog post by id."
+			},
+			"response": []
+		}
+	]
+}

@@ -1,6 +1,23 @@
 {
+  "name": "simple-blog-api",
+  "description": "Create a RESTful API for a personal blogging platform",
+  "keywords": [
+    "express",
+    "mongoose",
+    "mongodb",
+    "blog api"
+  ],
+  "version": "1.0.1",
+  "private": false,
+  "author": "Shubham Kaurav <shubhamkaurav30@gmail.com> https://github.com/shubhamkourav)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shubhamkourav/blog-rest-api.git"
+  },
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
     "express": "^4.20.0",
     "mongoose": "^8.6.1"
   }
