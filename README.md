@@ -130,5 +130,7 @@ The API uses HTTP status codes to indicate success or failure of the requests:
 ### Dev Dependencies
 **nodemon**: Automatically restarts the server on file changes.
 
-### License
-This project is licensed under the MIT License.
+## Project URL
+
+For more details this project is inspired from roadmap.sh: [Blogging Platform API on roadmap.sh](https://roadmap.sh/projects/blogging-platform-api)
+
